@@ -3,17 +3,19 @@ import dotenv from "dotenv";
 import mongoose from "mongoose";
 import cors from "cors";
 
+import authRoutes from "./routes/authRoutes.js";
+import feedbackRoutes from "./routes/feedbackRoutes.js";
+
 dotenv.config();
 const app = express();
+
 app.use(cors());
 app.use(express.json());
 
-// Test route
-app.get("/api/test", (req, res) => {
-  res.send("API is working perfectly, Rajat!");
-});
+// Routes
+app.use("/api/auth", authRoutes);
+app.use("/api/feedback", feedbackRoutes);
 
-// MongoDB connection
 mongoose
   .connect(process.env.MONGO_URI)
   .then(() => console.log("MongoDB Connected"))
