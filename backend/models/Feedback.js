@@ -9,6 +9,7 @@ const feedbackSchema = new mongoose.Schema(
     },
     message: { type: String, required: true },
     sentimentScore: { type: Number, default: 0 },
+    sentimentLabel: { type: String, default: "Neutral" },
   },
   { timestamps: true }
 );

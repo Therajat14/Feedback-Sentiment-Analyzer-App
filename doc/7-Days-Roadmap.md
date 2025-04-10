@@ -1,87 +1,114 @@
-# 🗓️ 7-Day Project Roadmap for Rajat - Feedback & Sentiment Analyzer App
+# 📝 Feedback & Sentiment Analyzer
 
-## ✅ Day 1: Setup & Boilerplate
+A full-stack MERN application to collect user feedback and analyze sentiment in real-time.  
+Includes user authentication, admin panel, PDF export, charts, email notifications, and more!
 
-- Initialize Git repository (`git init`)
-- Setup project folders: backend & frontend
-- Initialize pnpm workspaces (optional but recommended)
-- Setup backend boilerplate (server.js, routes, controllers)
-- Configure .env and MongoDB connection
-- Test API route: "API is working perfectly, Rajat!"
-- Create GitHub repo and push code
-
-**Target:** Backend server running successfully.
+> ⚡ Made with ❤️ by Rajat Singh
 
 ---
 
-## ✅ Day 2: Database Models & Basic API
+## 🚀 Project Overview
 
-- Design MongoDB schema:
-  - User model (name, email, password)
-  - Feedback model (userId, message, sentiment score)
-- Create routes and controllers for:
-  - Register user
-  - Login user
-  - Submit feedback
-- Implement JWT auth middleware
-
-**Target:** Register, login, and submit feedback via Postman.
+This project helps collect feedback from users, analyze its sentiment (positive / negative / neutral), and visualize insights with beautiful charts.  
+Admins can manage feedback, export reports as PDF, and even receive email notifications!
 
 ---
 
-## ✅ Day 3: Sentiment Analysis Integration
+## 📦 Tech Stack
 
-- Integrate basic sentiment analysis (use `sentiment` npm package)
-- Auto-detect sentiment when feedback is submitted
-- Store feedback + sentiment score in DB
-
-**Target:** System detects sentiment from Rajat's feedback!
-
----
-
-## ✅ Day 4: Frontend Setup
-
-- Setup React frontend with Vite/CRA + pnpm
-- Install Tailwind CSS
-- Setup Axios and connect to backend
-
-**Target:** Frontend running & connected to backend API.
+**Frontend:** React.js, Tailwind CSS, Axios  
+**Backend:** Node.js, Express.js, JWT Auth, Nodemailer  
+**Database:** MongoDB, Mongoose  
+**Tools:** Chart.js / Recharts, Day.js, React Toastify, jspdf
 
 ---
 
-## ✅ Day 5: Frontend - Auth Pages
+## 🗓️ Roadmap
 
-- Create Login and Register pages
-- Connect forms to backend API
-- Use JWT for authentication and store token
-- Add private route protection
+### ✅ Day 1: Project Initialization
 
-**Target:** Rajat can register and login from frontend!
+- Setup project folder and GitHub repository
+- Initialize Node.js backend with Express.js
+- Setup MongoDB connection using Mongoose
+- Test basic API routes (Health check)
 
----
+### ✅ Day 2: User Authentication (Backend)
 
-## ✅ Day 6: Frontend - Feedback UI
+- Setup User model in MongoDB
+- Implement JWT-based signup and login
+- Password hashing with bcrypt
+- Test authentication routes (Postman)
 
-- Create Feedback submission page
-- Connect form to backend
-- Show sentiment result dynamically
-- Display feedback history (bonus)
+### ✅ Day 3: Sentiment Analysis Integration
 
-**Target:** Rajat can submit feedback & see sentiment instantly!
+- Install and integrate `sentiment` npm package
+- Auto-detect sentiment on feedback submission
+- Store feedback with sentiment score in MongoDB
 
----
+### ✅ Day 4: Frontend Setup
 
-## ✅ Day 7: Finishing Touches & Deployment
+- Setup React.js project with Vite
+- Install Tailwind CSS for UI
+- Connect frontend with backend using Axios
 
-- Add error handling and success toasts
-- Improve UI: loading spinners, responsive design
-- Clean up code & add comments
-- Create production build
-- Deploy:
-  - Backend: Render / Railway / Vercel
-  - Frontend: Vercel / Netlify
+### ✅ Day 5: Frontend - Auth Flow
 
-**Target:** Project live and shareable! 🌍🚀
+- Build Register and Login forms
+- Connect to backend APIs
+- Store JWT token in localStorage
+- Add route protection
+
+### ✅ Day 6: Feedback Submission + History
+
+- Create feedback form (frontend)
+- Connect API to submit feedback
+- Display feedback history (optional)
+
+### ✅ Day 7: Admin Panel (Phase 1)
+
+- Create admin dashboard page
+- Fetch all feedback
+- Allow admin to delete feedback
+
+### ✅ Day 8: Charts & Analytics
+
+- Add Pie and Bar charts using Chart.js / Recharts
+- Visualize sentiment distribution and daily feedback
+
+### ✅ Day 9: Pagination, Search & Filters
+
+- Implement pagination in backend and frontend
+- Add search by keyword
+- Add sentiment type filters
+
+### ✅ Day 10: Date Handling & Timeago
+
+- Use Day.js to display "x minutes ago"
+- Filter feedback by date range
+
+### ✅ Day 11: Email Notifications
+
+- Send "Thank you" email on feedback submission
+- Notify admin of new feedback
+
+### ✅ Day 12: PDF Export
+
+- Generate PDF reports of feedback using `jspdf`
+- Export charts and summaries
+
+### ✅ Day 13: UI Polish
+
+- Add loading spinners and skeletons
+- Add Toast notifications
+- Mobile responsive design
+- Dark mode toggle 🌙
+
+### ✅ Day 14: Deployment
+
+- Deploy backend to Render / Railway
+- Deploy frontend to Vercel / Netlify
+- Connect MongoDB Atlas
+- Final cleanup and testing 🚀
 
 ---
 
