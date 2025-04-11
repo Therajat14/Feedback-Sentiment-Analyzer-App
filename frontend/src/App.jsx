@@ -1,13 +1,26 @@
-// import "dotenv/config";
+import { BrowserRouter as Router, Routes, Route } from "react-router";
+import Home from "./pages/Home";
+import Login from "./pages/Login";
+import Register from "./pages/Register";
+import PrivateRoute from "./components/PrivateRoute";
 
 function App() {
-  const url = import.meta.env.VITE_API_URL;
-  // console.log(url);
-  // console.log("hi");
   return (
-    <>
-      <h1 className="m-1 p-3 text-3xl font-bold underline">Hello world!</h1>
-    </>
+    <Router>
+      <Routes>
+        <Route
+          path="/"
+          element={
+            <PrivateRoute>
+              <Home />
+            </PrivateRoute>
+          }
+        />
+
+        <Route path="/login" element={<Login />} />
+        <Route path="/register" element={<Register />} />
+      </Routes>
+    </Router>
   );
 }
 
