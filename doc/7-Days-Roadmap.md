@@ -45,6 +45,12 @@ Admins can manage feedback, export reports as PDF, and even receive email notifi
 - Auto-detect sentiment on feedback submission
 - Store feedback with sentiment score in MongoDB
 
+### ✅ Day 4: Frontend Setup
+
+- Setup React.js project with Vite
+- Install Tailwind CSS for UI
+- Connect frontend with backend using Axios
+
 ### ✅ Day 5: Frontend - Auth Flow
 
 - Build Register and Login forms
@@ -56,7 +62,7 @@ Admins can manage feedback, export reports as PDF, and even receive email notifi
 
 - Create feedback form (frontend)
 - Connect API to submit feedback
-- Display feedback history (optional)
+- Display feedback history
 
 ### ✅ Day 7: Admin Panel (Phase 1)
 
