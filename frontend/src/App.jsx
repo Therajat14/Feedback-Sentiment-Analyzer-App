@@ -2,7 +2,7 @@ function App() {
   return (
     <>
       <body>
-        <h1 class="m-1 text-3xl font-bold underline">Hello world!</h1>
+        <h1 class="m-1 p-3 text-3xl font-bold underline">Hello world!</h1>
       </body>
     </>
   );
