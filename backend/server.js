@@ -5,6 +5,7 @@ import cors from "cors";
 
 import authRoutes from "./routes/authRoutes.js";
 import feedbackRoutes from "./routes/feedbackRoutes.js";
+import adminRoutes from "./routes/adminRoutes.js";
 
 dotenv.config();
 const app = express();
@@ -20,7 +21,7 @@ app.use(express.json());
 // Routes
 app.use("/api/auth", authRoutes);
 app.use("/api/feedback", feedbackRoutes);
-
+app.use("/api/admin", adminRoutes);
 mongoose
   .connect(process.env.MONGO_URI)
   .then(() => console.log("MongoDB Connected"))
