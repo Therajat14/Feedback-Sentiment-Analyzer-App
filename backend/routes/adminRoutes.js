@@ -3,6 +3,7 @@ import express from "express";
 import {
   getAllFeedbacks,
   deleteFeedback,
+  getFeedbackStats,
 } from "../controllers/adminController.js";
 import { authenticate, isAdmin } from "../middleware/authMiddleware.js";
 
@@ -10,5 +11,6 @@ const router = express.Router();
 
 router.get("/feedbacks", authenticate, isAdmin, getAllFeedbacks);
 router.delete("/feedbacks/:id", authenticate, isAdmin, deleteFeedback);
+router.get("/feedback-stats", authenticate, isAdmin, getFeedbackStats);
 
 export default router;
