@@ -12,7 +12,10 @@ const app = express();
 
 app.use(
   cors({
-    origin: process.env.FRONTEND_ORIGIN,
+    origin: [
+      "http://localhost:3000",
+      "https://feedback-sentiment-analyzer-app.vercel.app",
+    ],
     credentials: true,
   })
 );
