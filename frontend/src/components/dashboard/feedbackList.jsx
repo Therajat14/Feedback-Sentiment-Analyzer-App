@@ -2,13 +2,14 @@ import dayjs from "dayjs";
 import api from "../../api/axios";
 import { getEmotion, getBackgroundColor } from "../../../utils/sentimentUtils";
 
-export function FeedbackList1({ feedbacks, isFromAdmin }) {
+export function FeedbackList1({ feedbacks, isFromAdmin, fetchAllFeedbacks }) {
   const handleDelete = async (id) => {
     try {
       const token = localStorage.getItem("token");
       await api.delete(`api/admin/feedbacks/${id}`, {
         headers: { Authorization: `Bearer ${token}` },
       });
+      fetchAllFeedbacks();
     } catch (error) {
       console.error("Error deleting feedback:", error);
     }

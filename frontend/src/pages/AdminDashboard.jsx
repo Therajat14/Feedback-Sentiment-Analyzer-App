@@ -2,22 +2,10 @@ import { useEffect, useState } from "react";
 import dayjs from "dayjs";
 import relativeTime from "dayjs/plugin/relativeTime";
 import api from "../api/axios";
-import {
-  PieChart,
-  Pie,
-  Cell,
-  Tooltip,
-  BarChart,
-  Bar,
-  XAxis,
-  YAxis,
-  CartesianGrid,
-  Legend,
-} from "recharts";
 import jsPDF from "jspdf";
 import html2canvas from "html2canvas";
-
-import { getEmotion, getBackgroundColor } from "../../utils/sentimentUtils";
+import { FeedbackList1 } from "../components/dashboard/feedbacklist";
+import { Chart } from "../components/dashboard/charts";
 
 dayjs.extend(relativeTime);
 
@@ -29,19 +17,12 @@ const AdminDashboard = () => {
   const [sentiment, setSentiment] = useState("");
   const [startDate, setStartDate] = useState("");
   const [endDate, setEndDate] = useState("");
-  const [stats, setStats] = useState(null);
-
-  const COLORS = ["#4CAF50", "#9E9E9E", "#F44336"];
 
   useEffect(() => {
-    fetchStats();
-  }, []);
-
-  useEffect(() => {
-    fetchFeedbacks();
+    fetchAllFeedbacks();
   }, [page, keyword, sentiment, startDate, endDate]);
 
-  const fetchFeedbacks = async () => {
+  const fetchAllFeedbacks = async () => {
     try {
       const token = localStorage.getItem("token");
       const response = await api.get("/api/admin/feedbacks/", {
@@ -53,29 +34,6 @@ const AdminDashboard = () => {
       setPages(response.data.pages);
     } catch (error) {
       console.error("Error fetching feedbacks:", error);
-    }
-  };
-
-  const fetchStats = async () => {
-    try {
-      const res = await api.get("api/admin/feedback-stats", {
-        headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
-      });
-      setStats(res.data);
-    } catch (error) {
-      console.error("Error fetching stats:", error);
-    }
-  };
-
-  const handleDelete = async (id) => {
-    try {
-      const token = localStorage.getItem("token");
-      await api.delete(`api/admin/feedbacks/${id}`, {
-        headers: { Authorization: `Bearer ${token}` },
-      });
-      fetchFeedbacks();
-    } catch (error) {
-      console.error("Error deleting feedback:", error);
     }
   };
 
@@ -100,51 +58,7 @@ const AdminDashboard = () => {
       <div className="mx-auto max-w-6xl">
         <h1 className="mb-6 text-3xl font-bold text-white">Admin Dashboard</h1>
 
-        {stats && (
-          <div
-            className="mb-10 flex flex-wrap items-center justify-center gap-8 rounded-2xl bg-gray-800 p-6 shadow-lg"
-            id="chart-container"
-          >
-            <PieChart width={300} height={200}>
-              <Pie
-                data={[
-                  { name: "Positive", value: stats.sentimentCounts.Positive },
-                  { name: "Neutral", value: stats.sentimentCounts.Neutral },
-                  { name: "Negative", value: stats.sentimentCounts.Negative },
-                ]}
-                cx="50%"
-                cy="50%"
-                labelLine={false}
-                outerRadius={80}
-                fill="#8884d8"
-                dataKey="value"
-              >
-                {COLORS.map((color, index) => (
-                  <Cell key={`cell-${index}`} fill={color} />
-                ))}
-              </Pie>
-              <Tooltip />
-            </PieChart>
-
-            <BarChart
-              width={500}
-              height={250}
-              data={Object.entries(stats.dailyFeedback).map(
-                ([date, count]) => ({
-                  date,
-                  count,
-                }),
-              )}
-            >
-              <CartesianGrid strokeDasharray="3 3" />
-              <XAxis dataKey="date" stroke="#ccc" />
-              <YAxis stroke="#ccc" />
-              <Tooltip />
-              <Legend />
-              <Bar dataKey="count" fill="#4F46E5" />
-            </BarChart>
-          </div>
-        )}
+        <Chart />
 
         <div className="mb-6 flex items-center justify-between">
           <h2 className="text-2xl font-semibold">Feedbacks</h2>
@@ -188,47 +102,11 @@ const AdminDashboard = () => {
           />
         </div>
 
-        {feedbacks.length === 0 ? (
-          <p className="text-gray-400">No feedbacks found.</p>
-        ) : (
-          <ul id="feedback-list" className="space-y-4">
-            <div id="feedback-list" className="space-y-6">
-              {feedbacks.map((fb) => (
-                <div
-                  key={fb._id}
-                  className={`hover:bg-opacity-30 relative rounded-lg p-6 shadow-lg transition-colors ${getBackgroundColor(
-                    fb.sentimentLabel,
-                  )}`}
-                >
-                  <div className="flex items-start justify-between">
-                    <div className="flex items-center space-x-3">
-                      <span className="text-2xl">
-                        {getEmotion(fb.sentimentScore)}
-                      </span>
-                      <div>
-                        <p className="font-medium text-white">{fb.message}</p>
-                        <p className="text-sm text-gray-400">
-                          Sentiment: {fb.sentimentLabel} (Score:{" "}
-                          {fb.sentimentScore})
-                        </p>
-                        <p className="text-xs text-gray-500">
-                          {dayjs(fb.createdAt).format("MMM D, YYYY h:mm A")}
-                        </p>
-                      </div>
-                    </div>
-                    <button
-                      onClick={() => handleDelete(fb._id)}
-                      className="rounded bg-red-600 px-3 py-1 text-sm text-white transition hover:bg-red-500"
-                    >
-                      Delete
-                    </button>
-                  </div>
-                </div>
-              ))}
-            </div>
-          </ul>
-        )}
-
+        <FeedbackList1
+          feedbacks={feedbacks}
+          isFromAdmin={true}
+          fetchAllFeedbacks={fetchAllFeedbacks}
+        />
         <div className="mt-6 flex items-center justify-center space-x-2">
           {Array.from({ length: pages }, (_, i) => {
             const pageNum = i + 1;
