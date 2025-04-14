@@ -4,9 +4,9 @@ import relativeTime from "dayjs/plugin/relativeTime";
 import api from "../api/axios";
 import jsPDF from "jspdf";
 import html2canvas from "html2canvas";
-import { FeedbackList1 } from "../components/dashboard/feedbackList";
-import { Chart } from "../components/dashboard/charts";
-import LogoutButton from "../components/logoutButton";
+import { FeedbackList1 } from "../components/dashboard/FeedbackList1";
+import { Chart } from "../components/dashboard/Charts";
+import LogoutButton from "../components/LogoutButton";
 
 dayjs.extend(relativeTime);
 

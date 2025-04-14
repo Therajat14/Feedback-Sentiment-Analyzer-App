@@ -121,20 +121,6 @@ Admins can manage feedback, export reports as PDF, and even receive email notifi
 
 ---
 
-## Summary Table
-
-| Day | Goals                                |
-| --- | ------------------------------------ |
-| 1   | Setup backend boilerplate & test API |
-| 2   | Database models + user auth APIs     |
-| 3   | Sentiment analysis integration       |
-| 4   | Frontend setup with React & Tailwind |
-| 5   | Frontend Auth pages (Login/Register) |
-| 6   | Feedback submission & sentiment UI   |
-| 7   | Finishing touches & deployment       |
-
----
-
 > Rajat, stay consistent and you'll impress the recruiter with this solid, well-planned project! 🚀
 
 ---

@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import api from "../api/axios";
-import { FeedbackList1 } from "./dashboard/feedbacklist";
+import { FeedbackList1 } from "./dashboard/FeedbackList1";
 
 const FeedbackList = () => {
   const [feedbacks, setFeedbacks] = useState([]);
