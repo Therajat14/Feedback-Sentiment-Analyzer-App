@@ -13,11 +13,9 @@ import {
   Legend,
 } from "recharts";
 
-const COLORS = ["#4CAF50", "#9E9E9E", "#F44336"];
-
 function Chart() {
   const [stats, setStats] = useState(null);
-
+  const COLORS = ["#4CAF50", "#9E9E9E", "#F44336"];
   useEffect(() => {
     fetchStats();
   }, []);
