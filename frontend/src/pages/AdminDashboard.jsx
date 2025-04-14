@@ -6,7 +6,7 @@ import jsPDF from "jspdf";
 import html2canvas from "html2canvas";
 import LogoutButton from "../components/LogoutButton";
 import FeedbackList1 from "../components/dashboard/FeedbackList1";
-import { Chart } from "../components/dashboard/Charts";
+import Chart from "../components/dashboard/Charts";
 
 dayjs.extend(relativeTime);
 
