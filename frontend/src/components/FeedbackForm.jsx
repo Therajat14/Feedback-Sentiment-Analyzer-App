@@ -16,9 +16,9 @@ const FeedbackForm = () => {
             Authorization: `Bearer ${token}`,
           },
         },
-      ); // 👈 clean and short
+      );
       alert("Feedback submitted successfully!");
-      setMessage(""); // clear the input
+      setMessage("");
     } catch (error) {
       console.error(error);
       alert("Error submitting feedback");
@@ -26,9 +26,12 @@ const FeedbackForm = () => {
   };
 
   return (
-    <form onSubmit={handleSubmit} className="space-y-4">
+    <form
+      onSubmit={handleSubmit}
+      className="space-y-4 rounded-xl bg-gray-800 p-6 shadow-md"
+    >
       <textarea
-        className="w-full rounded border p-2"
+        className="w-full rounded-lg border border-gray-600 bg-gray-700 p-3 text-white placeholder-gray-400 focus:border-blue-500 focus:outline-none"
         rows="4"
         placeholder="Write your feedback..."
         value={message}
@@ -36,7 +39,7 @@ const FeedbackForm = () => {
       />
       <button
         type="submit"
-        className="rounded bg-blue-500 px-4 py-2 text-white"
+        className="w-full rounded-lg bg-blue-600 px-4 py-2 font-semibold text-white shadow transition-colors hover:bg-blue-700"
       >
         Submit Feedback
       </button>
