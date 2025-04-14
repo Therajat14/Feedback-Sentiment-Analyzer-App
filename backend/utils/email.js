@@ -1,23 +1,24 @@
-import SibApiV3Sdk from "sib-api-v3-sdk";
+import nodemailer from "nodemailer";
 
 export const sendEmail = async (to, subject, text) => {
   try {
-    const defaultClient = SibApiV3Sdk.ApiClient.instance;
-    const apiKey = defaultClient.authentications["api-key"];
-    apiKey.apiKey = process.env.BREVO_API_KEY; // Your Brevo API key
+    const transporter = nodemailer.createTransport({
+      host: "smtp-relay.brevo.com",
+      port: 587,
+      auth: {
+        user: process.env.EMAIL_USER, // Your Gmail
+        pass: process.env.EMAIL_PASS, // App password
+      },
+    });
 
-    const apiInstance = new SibApiV3Sdk.TransactionalEmailsApi();
+    await transporter.sendMail({
+      from: '"Rajat Singh 👑" rajat.code14@gmail.com',
+      to,
+      subject,
+      text,
+    });
 
-    const sendSmtpEmail = {
-      sender: { name: "Rajat Singh 👑", email: "8a5982001@smtp-brevo.com" },
-      to: [{ email: to }],
-      subject: subject,
-      htmlContent: `<p>${text}</p>`,
-    };
-
-    await apiInstance.sendTransacEmail(sendSmtpEmail);
-
-    console.log("✅ Email sent successfully to", to);
+    console.log("✅ Email sent to", to);
   } catch (error) {
     console.error("❌ Email sending failed:", error);
   }
