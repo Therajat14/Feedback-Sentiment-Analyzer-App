@@ -3,8 +3,16 @@ import Feedback from "../models/Feedback.js";
 // ✅ Get all feedbacks
 export const getAllFeedbacks = async (req, res) => {
   try {
-    const { page = 1, limit = 10, keyword = "", sentiment } = req.query;
-
+    const {
+      page = 1,
+      limit = 10,
+      keyword = "",
+      sentiment,
+      startDate,
+      endDate,
+    } = req.query;
+    console.log("St date: ", startDate);
+    console.log("ENd date: ", endDate);
     const query = {};
 
     // ✅ Search by keyword in 'message' field (case insensitive)
@@ -15,6 +23,19 @@ export const getAllFeedbacks = async (req, res) => {
     // ✅ Filter by sentimentLabel (Positive, Negative, Neutral)
     if (sentiment) {
       query.sentimentLabel = sentiment;
+    }
+
+    // ✅ Filter by date range
+    if (startDate || endDate) {
+      query.createdAt = {}; // ✅ Initialize the object
+
+      if (startDate) {
+        query.createdAt.$gte = new Date(startDate);
+      }
+
+      if (endDate) {
+        query.createdAt.$lte = new Date(endDate);
+      }
     }
 
     const total = await Feedback.countDocuments(query);

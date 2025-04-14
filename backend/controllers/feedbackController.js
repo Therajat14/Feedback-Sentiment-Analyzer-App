@@ -1,11 +1,14 @@
 import Feedback from "../models/Feedback.js";
 import Sentiment from "sentiment";
+import { sendEmail } from "../utils/email.js";
+import User from "../models/User.js";
+
 const sentiment = new Sentiment();
 
 export const submitFeedback = async (req, res) => {
   try {
     const { message } = req.body;
-
+    const userId = req.userId;
     const result = sentiment.analyze(message);
     const sentimentScore = result.score;
 
@@ -13,19 +16,23 @@ export const submitFeedback = async (req, res) => {
     if (sentimentScore > 0) sentimentLabel = "Positive";
     else if (sentimentScore < 0) sentimentLabel = "Negative";
 
-    console.log({
-      result,
-      sentimentLabel,
-    });
+    const user = await User.findById(userId);
 
+    console.log(user.email);
+
+    if (user) {
+      await sendEmail(
+        user.email,
+        "Thank you for your feedback!",
+        "We appreciate your valuable feedback."
+      );
+    }
     const feedback = new Feedback({
       userId: req.userId,
       message,
       sentimentScore,
       sentimentLabel,
     });
-
-    console.log(feedback);
 
     await feedback.save();
     res.status(201).json({ message: "Feedback submitted successfully" });
@@ -37,7 +44,7 @@ export const submitFeedback = async (req, res) => {
 export const getUserFeedbacks = async (req, res) => {
   try {
     const userId = req.userId;
-    console.log(userId); // prints 67f9103e20311c9b98ada29e
+
     const feedbacks = await Feedback.find({ userId }).sort({
       createdAt: -1,
     });

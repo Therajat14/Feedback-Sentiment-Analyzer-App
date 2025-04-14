@@ -1,4 +1,8 @@
 import { useEffect, useState } from "react";
+import dayjs from "dayjs";
+import relativeTime from "dayjs/plugin/relativeTime";
+
+dayjs.extend(relativeTime);
 import api from "../api/axios";
 import {
   PieChart,
@@ -19,6 +23,8 @@ const AdminDashboard = () => {
   const [pages, setPages] = useState(1);
   const [keyword, setKeyword] = useState("");
   const [sentiment, setSentiment] = useState("");
+  const [startDate, setStartDate] = useState("");
+  const [endDate, setEndDate] = useState("");
 
   const [stats, setStats] = useState(null);
   const COLORS = ["#4CAF50", "#9E9E9E", "#F44336"];
@@ -29,15 +35,16 @@ const AdminDashboard = () => {
 
   useEffect(() => {
     fetchFeedbacks();
-  }, [page, keyword, sentiment]);
+  }, [page, keyword, sentiment, startDate, endDate]);
 
   const fetchFeedbacks = async () => {
     try {
       const token = localStorage.getItem("token");
       const response = await api.get("/api/admin/feedbacks/", {
-        params: { page, keyword, sentiment },
+        params: { page, keyword, sentiment, startDate, endDate },
         headers: { Authorization: `Bearer ${token}` },
       });
+      console.log(startDate, endDate);
       console.log(response.data);
       setFeedbacks(response.data.feedbacks);
       setPage(response.data.page);
@@ -125,6 +132,16 @@ const AdminDashboard = () => {
         <option value="Neutral">Neutral</option>
         <option value="Negative">Negative</option>
       </select>
+      <input
+        type="date"
+        value={startDate}
+        onChange={(e) => setStartDate(e.target.value)}
+      />
+      <input
+        type="date"
+        value={endDate}
+        onChange={(e) => setEndDate(e.target.value)}
+      />
 
       {feedbacks.length === 0 ? (
         <p>No feedbacks found.</p>
@@ -136,6 +153,8 @@ const AdminDashboard = () => {
               className="mb-2 flex items-center justify-between rounded border p-3"
             >
               <div>
+                <p>{dayjs(feedback.createdAt).fromNow()}</p>
+
                 <p>
                   <strong>Message:</strong> {feedback.message}
                 </p>
