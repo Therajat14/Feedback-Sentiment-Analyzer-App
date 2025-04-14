@@ -45,9 +45,11 @@ export const getUserFeedbacks = async (req, res) => {
   try {
     const userId = req.userId;
 
-    const feedbacks = await Feedback.find({ userId }).sort({
-      createdAt: -1,
-    });
+    const feedbacks = await Feedback.find({ userId })
+      .sort({
+        createdAt: -1,
+      })
+      .populate("userId", "name");
 
     res.status(200).json(feedbacks);
   } catch (error) {

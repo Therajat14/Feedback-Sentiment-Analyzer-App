@@ -11,31 +11,24 @@ export const getAllFeedbacks = async (req, res) => {
       startDate,
       endDate,
     } = req.query;
-    console.log("St date: ", startDate);
-    console.log("ENd date: ", endDate);
+
     const query = {};
 
-    // ✅ Search by keyword in 'message' field (case insensitive)
+    // ✅ Keyword filter
     if (keyword) {
       query.message = { $regex: keyword, $options: "i" };
     }
 
-    // ✅ Filter by sentimentLabel (Positive, Negative, Neutral)
+    // ✅ Sentiment filter
     if (sentiment) {
       query.sentimentLabel = sentiment;
     }
 
-    // ✅ Filter by date range
+    // ✅ Date range filter
     if (startDate || endDate) {
-      query.createdAt = {}; // ✅ Initialize the object
-
-      if (startDate) {
-        query.createdAt.$gte = new Date(startDate);
-      }
-
-      if (endDate) {
-        query.createdAt.$lte = new Date(endDate);
-      }
+      query.createdAt = {};
+      if (startDate) query.createdAt.$gte = new Date(startDate);
+      if (endDate) query.createdAt.$lte = new Date(endDate);
     }
 
     const total = await Feedback.countDocuments(query);
@@ -43,7 +36,8 @@ export const getAllFeedbacks = async (req, res) => {
     const feedbacks = await Feedback.find(query)
       .sort({ createdAt: -1 })
       .skip((page - 1) * limit)
-      .limit(Number(limit));
+      .limit(Number(limit))
+      .populate("userId", "name"); // 🟢 Populate user's name
 
     res.json({
       feedbacks,
