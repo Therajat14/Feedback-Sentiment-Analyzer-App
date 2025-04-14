@@ -4,10 +4,10 @@ import relativeTime from "dayjs/plugin/relativeTime";
 import api from "../api/axios";
 import jsPDF from "jspdf";
 import html2canvas from "html2canvas";
-import LogoutButton from "../components/LogoutButton";
+
 import FeedbackList1 from "../components/dashboard/FeedbackList1";
 import Chart from "../components/dashboard/Charts";
-
+import LogoutButton from "../components/LogOut";
 dayjs.extend(relativeTime);
 
 const AdminDashboard = () => {
