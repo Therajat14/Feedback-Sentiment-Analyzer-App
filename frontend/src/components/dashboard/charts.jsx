@@ -15,7 +15,7 @@ import {
 
 const COLORS = ["#4CAF50", "#9E9E9E", "#F44336"];
 
-export function Chart() {
+function Chart() {
   const [stats, setStats] = useState(null);
 
   useEffect(() => {
@@ -130,3 +130,5 @@ export function Chart() {
     </>
   );
 }
+
+export default Chart;
