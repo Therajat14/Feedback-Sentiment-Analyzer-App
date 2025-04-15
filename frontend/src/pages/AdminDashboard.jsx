@@ -5,9 +5,9 @@ import api from "../api/axios";
 import jsPDF from "jspdf";
 import html2canvas from "html2canvas";
 import FeedbackList1 from "../components/dashboard/FeedbackList1";
-import Chart from "../components/dashboard/Charts";
+import Chart from "../components/dashboard/charts";
 import LogoutButton from "../components/LogOut";
-import { useContext } from "react";
+
 dayjs.extend(relativeTime);
 
 const AdminDashboard = () => {
