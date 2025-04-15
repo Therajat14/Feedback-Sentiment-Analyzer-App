@@ -4,7 +4,6 @@ import Login from "./pages/Login";
 import Register from "./pages/Register";
 import PrivateRoute from "./components/PrivateRoute";
 import AdminDashboard from "./pages/AdminDashboard";
-import { ToastContainer } from "react-toastify";
 
 function App() {
   return (
@@ -32,7 +31,6 @@ function App() {
           <Route path="/register" element={<Register />} />
         </Routes>
       </Router>
-      <ToastContainer position="top-right" autoClose={3000} theme="dark" />
     </div>
   );
 }

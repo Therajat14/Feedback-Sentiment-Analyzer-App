@@ -1,6 +1,5 @@
 import { useState } from "react";
 import api from "../api/axios";
-import { toast } from "react-toastify";
 
 const FeedbackForm = () => {
   const [message, setMessage] = useState("");
@@ -18,11 +17,10 @@ const FeedbackForm = () => {
           },
         },
       );
-      toast.success("🎉 Feedback submitted!");
+
       setMessage("");
     } catch (error) {
       console.error(error);
-      toast.error("❌ Something went wrong. Please try again.");
     }
   };
 
