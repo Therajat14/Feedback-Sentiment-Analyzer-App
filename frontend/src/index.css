@@ -1,1 +1,6 @@
 @import "tailwindcss";
+
+.force-export-style * {
+  color: white !important;
+  background-color: black !important;
+}
