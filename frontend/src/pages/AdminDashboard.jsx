@@ -5,8 +5,9 @@ import api from "../api/axios";
 import jsPDF from "jspdf";
 import html2canvas from "html2canvas";
 import FeedbackList1 from "../components/dashboard/FeedbackList1";
-import Chart from "../components/dashboard/charts";
+import Chart from "../components/dashboard/Charts";
 import LogoutButton from "../components/LogOut";
+import WordCloudChart from "../components/dashboard/WordCloudChart";
 
 dayjs.extend(relativeTime);
 
@@ -18,8 +19,13 @@ const AdminDashboard = () => {
   const [sentiment, setSentiment] = useState("");
   const [startDate, setStartDate] = useState("");
   const [endDate, setEndDate] = useState("");
+  const [username, setUsername] = useState("");
 
   useEffect(() => {
+    const user = JSON.parse(localStorage.getItem("user"));
+    if (user && user.username) {
+      setUsername(user.username);
+    }
     fetchAllFeedbacks();
   }, [page, keyword, sentiment, startDate, endDate]);
 
@@ -37,36 +43,79 @@ const AdminDashboard = () => {
       console.error("Error fetching feedbacks:", error);
     }
   };
-
   const exportPDF = async () => {
-    const doc = new jsPDF();
-    const feedbackElement = document.getElementById("feedback-list");
-
-    if (feedbackElement) {
-      const canvas = await html2canvas(feedbackElement);
-      const imgData = canvas.toDataURL("image/png");
-      const pdfWidth = doc.internal.pageSize.getWidth();
-      const pdfHeight = (canvas.height * pdfWidth) / canvas.width;
-      doc.addImage(imgData, "PNG", 0, 0, pdfWidth, pdfHeight);
+    const input = document.querySelector("#feedback-list-section");
+    if (!input) {
+      console.error("Feedback section not found");
+      return;
     }
 
-    doc.save("feedback-report.pdf");
+    try {
+      const canvas = await html2canvas(input, {
+        scale: 2, // for better quality
+        useCORS: true,
+      });
+      const imgData = canvas.toDataURL("image/png");
+      const pdf = new jsPDF("p", "mm", "a4");
+
+      const pdfWidth = pdf.internal.pageSize.getWidth();
+      const pdfHeight = (canvas.height * pdfWidth) / canvas.width;
+
+      pdf.addImage(imgData, "PNG", 0, 0, pdfWidth, pdfHeight);
+      pdf.save("feedback-report.pdf");
+    } catch (err) {
+      console.error("Failed to export PDF:", err);
+    }
   };
 
   return (
-    <div className="min-h-screen bg-gray-950 p-6 text-white">
-      <div className="mx-auto max-w-6xl space-y-8">
-        {/* Header */}
-        <div className="flex items-center justify-between border-b border-gray-800 pb-4">
-          <h1 className="text-3xl font-bold">Admin Dashboard</h1>
-          <LogoutButton />
+    <div className="flex h-screen w-full bg-gray-950 text-white">
+      {/* Sidebar */}
+      <aside className="hidden w-64 flex-shrink-0 flex-col border-r border-gray-800 bg-gray-900/80 p-6 shadow-xl backdrop-blur-lg md:flex">
+        <div className="mb-8 text-center">
+          <div className="text-xl font-bold">
+            Welcome, {username || "Admin"}
+          </div>
+          <p className="text-sm text-gray-400">Admin Panel</p>
         </div>
+        <nav className="space-y-4">
+          <a
+            href="#"
+            className="block rounded-md px-4 py-2 text-gray-300 transition hover:bg-blue-600 hover:text-white"
+          >
+            📊 Dashboard
+          </a>
+          <a
+            href="#"
+            className="block rounded-md px-4 py-2 text-gray-300 transition hover:bg-purple-600 hover:text-white"
+          >
+            📝 Manage Feedbacks
+          </a>
+          <a
+            href="#"
+            className="block rounded-md px-4 py-2 text-gray-300 transition hover:bg-pink-600 hover:text-white"
+          >
+            📦 Reports
+          </a>
+          <LogoutButton />
+        </nav>
+      </aside>
+
+      {/* Main Section */}
+      <div className="flex flex-1 flex-col overflow-y-auto p-6">
+        {/* Header (mobile-friendly) */}
+        <header className="mb-6 flex flex-col justify-between gap-3 border-b border-gray-800 pb-4 sm:flex-row sm:items-center">
+          <h1 className="text-3xl font-bold">Admin Dashboard</h1>
+          <div className="md:hidden">
+            <LogoutButton />
+          </div>
+        </header>
 
         {/* Charts */}
         <Chart />
 
         {/* Filters + Export */}
-        <div className="flex flex-col gap-4 rounded-xl border border-gray-800 bg-gray-900 p-4 shadow-md sm:flex-row sm:items-center sm:justify-between">
+        <div className="mt-6 flex flex-col gap-4 rounded-xl border border-gray-800 bg-gray-900 p-4 shadow-md md:flex-row md:items-center md:justify-between">
           <h2 className="text-xl font-semibold">Feedbacks</h2>
           <div className="flex flex-wrap gap-3">
             <input
@@ -108,11 +157,20 @@ const AdminDashboard = () => {
         </div>
 
         {/* Feedback List */}
-        <FeedbackList1
-          feedbacks={feedbacks}
-          isFromAdmin={true}
-          fetchAllFeedbacks={fetchAllFeedbacks}
-        />
+        <div
+          className="mt-6"
+          id="feedback-list-section"
+          style={{
+            colorScheme: "light", // helps with consistent rendering
+            color: "rgb(255,255,255)", // prevent oklab or hsl issues
+          }}
+        >
+          <FeedbackList1
+            feedbacks={feedbacks}
+            isFromAdmin={true}
+            fetchAllFeedbacks={fetchAllFeedbacks}
+          />
+        </div>
 
         {/* Pagination */}
         <div className="mt-8 flex flex-wrap justify-center gap-2">
