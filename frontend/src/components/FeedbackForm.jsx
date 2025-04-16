@@ -1,7 +1,7 @@
 import { useState } from "react";
 import api from "../api/axios";
 
-const FeedbackForm = () => {
+const FeedbackForm = ({ reload, setReload }) => {
   const [message, setMessage] = useState("");
 
   const handleSubmit = async (e) => {
@@ -19,6 +19,7 @@ const FeedbackForm = () => {
       );
 
       setMessage("");
+      setReload(!reload);
     } catch (error) {
       console.error(error);
     }

@@ -1,9 +1,11 @@
 import { useEffect, useState } from "react";
 import FeedbackForm from "../components/FeedbackForm";
 import FeedbackList from "../components/FeedbackList";
+import LogoutButton from "../components/LogOut";
 
 const Home = () => {
   const [username, setUsername] = useState("");
+  const [reload, setReload] = useState(false);
 
   useEffect(() => {
     const user = JSON.parse(localStorage.getItem("user"));
@@ -55,16 +57,17 @@ const Home = () => {
       <div className="flex flex-1 flex-col">
         {/* Topbar */}
         <header className="flex items-center justify-between border-b border-gray-700 bg-gray-900/80 px-6 py-4 shadow-md backdrop-blur-sm">
-          <h1 className="bg-gradient-to-r from-blue-400 via-purple-400 to-pink-400 bg-clip-text text-2xl font-bold text-transparent">
-            Feedback & Sentiment Analyzer 🚀
-          </h1>
+          <div className="flex w-full flex-row items-center justify-between">
+            <h1 className="bg-clip-text text-2xl font-bold">Submit Feedback</h1>
+            <LogoutButton />
+          </div>
         </header>
 
         {/* Main Section */}
         <main className="flex-1 overflow-y-auto p-8">
           <div className="mx-auto max-w-4xl space-y-10">
-            <FeedbackForm />
-            <FeedbackList />
+            <FeedbackForm reload={reload} setReload={setReload} />
+            <FeedbackList reload={reload} />
           </div>
         </main>
       </div>

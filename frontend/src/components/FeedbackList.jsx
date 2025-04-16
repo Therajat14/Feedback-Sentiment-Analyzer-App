@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import api from "../api/axios";
 import FeedbackList1 from "../components/dashboard/FeedbackList1";
 
-const FeedbackList = () => {
+const FeedbackList = ({ reload }) => {
   const [feedbacks, setFeedbacks] = useState([]);
 
   useEffect(() => {
@@ -22,7 +22,7 @@ const FeedbackList = () => {
     };
 
     fetchFeedbacks();
-  }, []);
+  }, [reload]);
 
   return (
     <div>

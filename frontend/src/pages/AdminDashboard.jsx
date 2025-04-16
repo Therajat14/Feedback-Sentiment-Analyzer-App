@@ -4,7 +4,7 @@ import relativeTime from "dayjs/plugin/relativeTime";
 import api from "../api/axios";
 
 import FeedbackList1 from "../components/dashboard/FeedbackList1";
-import Chart from "../components/dashboard/Chart"; // !! WARNING PLS DONT CHNAGE THIS CART IMPORT  ERROR
+import Chart from "../components/dashboard/Chart";
 import LogoutButton from "../components/LogOut";
 
 import { PDFDownloadLink } from "@react-pdf/renderer";

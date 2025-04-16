@@ -1,6 +1,7 @@
 import { useState } from "react";
 import axios from "../api/axios";
-import { Link, useNavigate } from "react-router";
+import { Link, useNavigate } from "react-router"; // ✅ Fix router import
+import { Toaster, toast } from "react-hot-toast"; // ✅ Toast import
 
 function Login() {
   const [formData, setFormData] = useState({ email: "", password: "" });
@@ -14,15 +15,16 @@ function Login() {
     try {
       const res = await axios.post("api/auth/login", formData);
       localStorage.setItem("token", res.data.token);
-      alert("✅ Login successful");
+      toast.success("✅ Login successful");
       navigate("/");
     } catch (error) {
-      alert(error.response?.data?.message || "Login failed");
+      toast.error(error.response?.data?.message || "Login failed");
     }
   };
 
   return (
     <div className="flex min-h-screen items-center justify-center bg-gradient-to-br from-gray-900 via-gray-800 to-black px-4">
+      <Toaster position="top-right" /> {/* ✅ Toast container */}
       <form
         onSubmit={handleSubmit}
         className="w-full max-w-sm space-y-6 rounded-2xl bg-white/5 p-8 shadow-2xl backdrop-blur-md"
@@ -56,6 +58,7 @@ function Login() {
           </Link>
         </p>
       </form>
+      Test Toast
     </div>
   );
 }
