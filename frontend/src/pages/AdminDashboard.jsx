@@ -2,12 +2,13 @@ import { useEffect, useState } from "react";
 import dayjs from "dayjs";
 import relativeTime from "dayjs/plugin/relativeTime";
 import api from "../api/axios";
-import jsPDF from "jspdf";
-import html2canvas from "html2canvas";
+
 import FeedbackList1 from "../components/dashboard/FeedbackList1";
-import Chart from "../components/dashboard/Charts";
+import Chart from "../components/dashboard/Charts"; // !! WARNING PLS DONT CHNAGE THIS CART IMPORT  ERROR
 import LogoutButton from "../components/LogOut";
-import WordCloudChart from "../components/dashboard/WordCloudChart";
+
+import { PDFDownloadLink } from "@react-pdf/renderer";
+import FeedbackPDF from "../components/dashboard/FeedbackPDF";
 
 dayjs.extend(relativeTime);
 
@@ -39,32 +40,9 @@ const AdminDashboard = () => {
       setFeedbacks(response.data.feedbacks);
       setPage(response.data.page);
       setPages(response.data.pages);
+      console.log(response.data.feedbacks);
     } catch (error) {
       console.error("Error fetching feedbacks:", error);
-    }
-  };
-  const exportPDF = async () => {
-    const input = document.querySelector("#feedback-list-section");
-    if (!input) {
-      console.error("Feedback section not found");
-      return;
-    }
-
-    try {
-      const canvas = await html2canvas(input, {
-        scale: 2, // for better quality
-        useCORS: true,
-      });
-      const imgData = canvas.toDataURL("image/png");
-      const pdf = new jsPDF("p", "mm", "a4");
-
-      const pdfWidth = pdf.internal.pageSize.getWidth();
-      const pdfHeight = (canvas.height * pdfWidth) / canvas.width;
-
-      pdf.addImage(imgData, "PNG", 0, 0, pdfWidth, pdfHeight);
-      pdf.save("feedback-report.pdf");
-    } catch (err) {
-      console.error("Failed to export PDF:", err);
     }
   };
 
@@ -147,12 +125,21 @@ const AdminDashboard = () => {
               onChange={(e) => setEndDate(e.target.value)}
               className="rounded-md border border-gray-700 bg-gray-800 p-2 text-sm text-white focus:ring-2 focus:ring-blue-500 focus:outline-none"
             />
-            <button
-              onClick={exportPDF}
-              className="rounded-md bg-blue-600 px-4 py-2 text-sm font-medium text-white transition hover:bg-blue-500"
-            >
-              Export PDF
-            </button>
+            {feedbacks.length >= 1 && (
+              <PDFDownloadLink
+                document={<FeedbackPDF feedbacks={feedbacks} />}
+                fileName="feedback-report.pdf"
+              >
+                {({ loading }) => (
+                  <button
+                    className="rounded-md bg-blue-600 px-4 py-2 text-sm font-medium text-white transition hover:bg-blue-500"
+                    disabled={loading}
+                  >
+                    {loading ? "Generating..." : "Export PDF"}
+                  </button>
+                )}
+              </PDFDownloadLink>
+            )}
           </div>
         </div>
 
