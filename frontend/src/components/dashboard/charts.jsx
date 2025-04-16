@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import api from "../../services/api";
-import { useMemo } from "react";
+import WordCloudChart from "./WordCloudChart";
 import {
   PieChart,
   Pie,
@@ -12,11 +12,14 @@ import {
   YAxis,
   CartesianGrid,
   Legend,
+  LineChart,
+  Line,
 } from "recharts";
 
 function Chart() {
   const [stats, setStats] = useState(null);
   const COLORS = ["#4CAF50", "#9E9E9E", "#F44336"];
+
   useEffect(() => {
     fetchStats();
   }, []);
@@ -32,7 +35,6 @@ function Chart() {
     }
   };
 
-  // Group daily feedback into months
   const getMonthlyFeedback = () => {
     const monthlyCounts = {};
     for (const [date, count] of Object.entries(stats.dailyFeedback)) {
@@ -47,6 +49,40 @@ function Chart() {
       month,
       count,
     }));
+  };
+
+  // New function: extract line chart data for all sentiments per month
+  const getMonthlySentimentTrends = () => {
+    const sentimentMap = {};
+
+    for (const [date, sentimentCounts] of Object.entries(
+      stats.dailySentimentBreakdown,
+    )) {
+      const month = new Date(date).toLocaleString("default", {
+        year: "numeric",
+        month: "short",
+      });
+
+      if (!sentimentMap[month]) {
+        sentimentMap[month] = {
+          month,
+          Positive: 0,
+          Neutral: 0,
+          Negative: 0,
+        };
+      }
+
+      sentimentMap[month].Positive += sentimentCounts.Positive || 0;
+      sentimentMap[month].Neutral += sentimentCounts.Neutral || 0;
+      sentimentMap[month].Negative += sentimentCounts.Negative || 0;
+    }
+
+    // Sort by date and take last 12 months
+    const sorted = Object.values(sentimentMap).sort((a, b) => {
+      return new Date(`1 ${a.month}`) - new Date(`1 ${b.month}`);
+    });
+
+    return sorted.slice(-12); // last 12 months
   };
 
   return (
@@ -81,7 +117,6 @@ function Chart() {
               </Pie>
               <Tooltip />
             </PieChart>
-            {/* Custom Legend with line breaks */}
             <div className="mt-2 space-y-1 text-sm text-gray-300">
               <div className="flex items-center gap-2">
                 <span
@@ -116,13 +151,46 @@ function Chart() {
               <CartesianGrid strokeDasharray="3 3" />
               <XAxis dataKey="month" stroke="#ccc" />
               <YAxis stroke="#ccc" />
-              <Tooltip
-                formatter={(value) => [`${value} feedbacks`, "Count"]}
-                labelFormatter={(label) => `Month: ${label}`}
-              />
+              <Tooltip />
               <Legend />
               <Bar dataKey="count" fill="#6366F1" radius={[4, 4, 0, 0]} />
             </BarChart>
+          </div>
+
+          {/* NEW: Sentiment Line Chart */}
+          <div className="flex flex-col items-center">
+            <h3 className="mb-4 text-lg font-semibold text-gray-300">
+              Monthly Sentiment Trend (Last 12 Months)
+            </h3>
+            <LineChart
+              width={600}
+              height={300}
+              data={getMonthlySentimentTrends()}
+            >
+              <CartesianGrid strokeDasharray="3 3" />
+              <XAxis dataKey="month" stroke="#ccc" />
+              <YAxis stroke="#ccc" />
+              <Tooltip />
+              <Legend />
+              <Line
+                type="monotone"
+                dataKey="Positive"
+                stroke="#4CAF50"
+                strokeWidth={2}
+              />
+              <Line
+                type="monotone"
+                dataKey="Neutral"
+                stroke="#9E9E9E"
+                strokeWidth={2}
+              />
+              <Line
+                type="monotone"
+                dataKey="Negative"
+                stroke="#F44336"
+                strokeWidth={2}
+              />
+            </LineChart>
           </div>
         </div>
       )}
