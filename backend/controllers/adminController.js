@@ -71,19 +71,43 @@ export const deleteFeedback = async (req, res) => {
 export const getFeedbackStats = async (req, res) => {
   try {
     const feedbacks = await Feedback.find();
-    console.log(feedbacks);
 
     const sentimentCounts = { Positive: 0, Negative: 0, Neutral: 0 };
     const dailyFeedback = {};
+    const dailySentimentBreakdown = {}; // 👈 NEW
 
     feedbacks.forEach((item) => {
-      sentimentCounts[item.sentimentLabel] += 1;
+      const sentiment = item.sentimentLabel;
+      sentimentCounts[sentiment] += 1;
 
       const date = item.createdAt.toISOString().split("T")[0];
+
+      // Total daily feedback count
       dailyFeedback[date] = (dailyFeedback[date] || 0) + 1;
+
+      // Sentiment breakdown per day
+      if (!dailySentimentBreakdown[date]) {
+        dailySentimentBreakdown[date] = {
+          Positive: 0,
+          Neutral: 0,
+          Negative: 0,
+        };
+      }
+      dailySentimentBreakdown[date][sentiment] += 1;
     });
 
-    res.json({ sentimentCounts, dailyFeedback });
+    res.json({ sentimentCounts, dailyFeedback, dailySentimentBreakdown });
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+};
+
+// Controller
+export const getFeedbackTexts = async (req, res) => {
+  try {
+    const feedbacks = await Feedback.find({}, "text");
+    const feedbackTexts = feedbacks.map((fb) => fb.text || "");
+    res.json(feedbackTexts);
   } catch (error) {
     res.status(500).json({ message: error.message });
   }
