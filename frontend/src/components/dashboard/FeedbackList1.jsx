@@ -16,7 +16,7 @@ function FeedbackList1({ feedbacks, isFromAdmin, fetchAllFeedbacks }) {
   };
 
   return (
-    <div>
+    <div className="scrollbar-thin scrollbar-thumb-gray-600 scrollbar-track-gray-800 max-h-[500px] pr-2">
       {feedbacks.length === 0 ? (
         <p className="py-10 text-center text-gray-400">No feedbacks found.</p>
       ) : (

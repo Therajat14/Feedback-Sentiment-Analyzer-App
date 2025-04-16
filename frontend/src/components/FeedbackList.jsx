@@ -25,7 +25,7 @@ const FeedbackList = ({ reload }) => {
   }, [reload]);
 
   return (
-    <div>
+    <div className="">
       <FeedbackList1 feedbacks={feedbacks} isFromAdmin={false} />
     </div>
     // <div className="mt-8 space-y-6">

@@ -15,6 +15,8 @@ function Login() {
     try {
       const res = await axios.post("api/auth/login", formData);
       localStorage.setItem("token", res.data.token);
+      localStorage.setItem("name", res.data.name);
+      console.log(res.data);
       toast.success("✅ Login successful");
       navigate("/");
     } catch (error) {
@@ -23,11 +25,32 @@ function Login() {
   };
 
   return (
-    <div className="flex min-h-screen items-center justify-center bg-gradient-to-br from-gray-900 via-gray-800 to-black px-4">
-      <Toaster position="top-right" /> {/* ✅ Toast container */}
+    <div className="relative flex min-h-screen items-center justify-center overflow-hidden bg-gradient-to-br from-gray-900 via-gray-800 to-black px-4">
+      {/* ✅ Pattern Background */}
+      <svg
+        className="absolute inset-0 h-full w-full opacity-10"
+        xmlns="http://www.w3.org/2000/svg"
+      >
+        <defs>
+          <pattern
+            id="dots"
+            x="0"
+            y="0"
+            width="20"
+            height="20"
+            patternUnits="userSpaceOnUse"
+          >
+            <circle cx="1" cy="1" r="1" fill="white" />
+          </pattern>
+        </defs>
+        <rect width="100%" height="100%" fill="url(#dots)" />
+      </svg>
+
+      {/* 🔥 Your form below stays the same */}
+      <Toaster position="top-right" />
       <form
         onSubmit={handleSubmit}
-        className="w-full max-w-sm space-y-6 rounded-2xl bg-white/5 p-8 shadow-2xl backdrop-blur-md"
+        className="z-10 w-full max-w-sm space-y-6 rounded-2xl bg-white/5 p-8 shadow-2xl backdrop-blur-md"
       >
         <h2 className="text-center text-3xl font-bold text-white">
           Welcome Back 👋
@@ -58,7 +81,6 @@ function Login() {
           </Link>
         </p>
       </form>
-      Test Toast
     </div>
   );
 }

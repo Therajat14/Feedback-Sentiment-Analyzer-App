@@ -8,15 +8,34 @@ const Home = () => {
   const [reload, setReload] = useState(false);
 
   useEffect(() => {
-    const user = JSON.parse(localStorage.getItem("user"));
-    if (user && user.username) {
-      setUsername(user.username);
+    const name = localStorage.getItem("name");
+    if (name) {
+      setUsername(name);
     }
   }, []);
 
   return (
     <div className="flex h-screen w-full bg-gradient-to-br from-gray-950 via-gray-900 to-black text-white">
       {/* Sidebar */}
+      <svg
+        className="absolute inset-0 h-full w-full opacity-10"
+        xmlns="http://www.w3.org/2000/svg"
+      >
+        <defs>
+          <pattern
+            id="dots"
+            x="0"
+            y="0"
+            width="20"
+            height="20"
+            patternUnits="userSpaceOnUse"
+          >
+            <circle cx="1" cy="1" r="1" fill="white" />
+          </pattern>
+        </defs>
+        <rect width="100%" height="100%" fill="url(#dots)" />
+      </svg>
+
       <aside className="hidden w-64 flex-shrink-0 border-r border-gray-700 bg-gray-900/80 p-6 shadow-xl backdrop-blur-lg lg:block">
         <div className="mb-8 text-center">
           <div className="text-xl font-bold text-white">
@@ -67,6 +86,9 @@ const Home = () => {
         <main className="flex-1 overflow-y-auto p-8">
           <div className="mx-auto max-w-4xl space-y-10">
             <FeedbackForm reload={reload} setReload={setReload} />
+            <div className="rounded-xl border border-gray-800 bg-gray-900 p-4">
+              <h2 className="text-xl font-semibold">Feedback History</h2>
+            </div>
             <FeedbackList reload={reload} />
           </div>
         </main>
