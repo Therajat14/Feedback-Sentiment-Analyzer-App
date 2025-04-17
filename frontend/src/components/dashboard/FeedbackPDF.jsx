@@ -1,7 +1,7 @@
 import React from "react";
 import { Page, Text, View, Document, StyleSheet } from "@react-pdf/renderer";
 
-// Styles that resemble Tailwind's utility classes
+// Styles (React-PDF supports a limited set of CSS)
 const styles = StyleSheet.create({
   page: {
     padding: 36,
@@ -22,7 +22,7 @@ const styles = StyleSheet.create({
     borderRadius: 8, // Tailwind: rounded-lg
     padding: 16,
     marginBottom: 16,
-    boxShadow: "0 1px 2px rgba(0,0,0,0.05)", // Tailwind: shadow-sm
+    // boxShadow removed – not supported by @react-pdf/renderer
   },
   fieldText: {
     marginBottom: 6,
@@ -59,7 +59,9 @@ const FeedbackPDF = ({ feedbacks }) => (
           </Text>
           <Text style={styles.fieldText}>
             <Text style={styles.fieldLabel}>Date: </Text>
-            {new Date(fb.createdAt).toLocaleString()}
+            {fb.createdAt
+              ? new Date(fb.createdAt).toLocaleString()
+              : "Unknown Date"}
           </Text>
         </View>
       ))}

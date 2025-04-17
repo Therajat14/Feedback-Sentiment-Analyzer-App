@@ -142,7 +142,7 @@ const AdminDashboard = () => {
               onChange={(e) => setEndDate(e.target.value)}
               className="rounded-md border border-gray-700 bg-gray-800 p-2 text-sm text-white focus:ring-2 focus:ring-blue-500 focus:outline-none"
             />
-            {feedbacks.length >= 1 && (
+            {feedbacks.length >= 10 && (
               <PDFDownloadLink
                 document={<FeedbackPDF feedbacks={feedbacks} />}
                 fileName="feedback-report.pdf"

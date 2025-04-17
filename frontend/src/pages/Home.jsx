@@ -19,24 +19,6 @@ const Home = () => {
   return (
     <div className="flex h-screen w-full bg-gradient-to-br from-gray-950 via-gray-900 to-black text-white">
       {/* Sidebar */}
-      <svg
-        className="absolute inset-0 h-full w-full opacity-10"
-        xmlns="http://www.w3.org/2000/svg"
-      >
-        <defs>
-          <pattern
-            id="dots"
-            x="0"
-            y="0"
-            width="20"
-            height="20"
-            patternUnits="userSpaceOnUse"
-          >
-            <circle cx="1" cy="1" r="1" fill="white" />
-          </pattern>
-        </defs>
-        <rect width="100%" height="100%" fill="url(#dots)" />
-      </svg>
 
       <aside className="hidden w-64 flex-shrink-0 border-r border-gray-700 bg-gray-900/80 p-6 shadow-xl backdrop-blur-lg lg:block">
         <div className="mb-8 text-center">
