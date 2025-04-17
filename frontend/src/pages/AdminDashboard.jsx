@@ -48,71 +48,50 @@ const AdminDashboard = () => {
 
   return (
     <div className="flex h-screen w-full scroll-smooth bg-gray-950 text-white">
-      {/* Sidebar */}
-      <svg
-        className="absolute inset-0 h-full w-full opacity-10"
-        xmlns="http://www.w3.org/2000/svg"
-      >
-        <defs>
-          <pattern
-            id="dots"
-            x="0"
-            y="0"
-            width="20"
-            height="20"
-            patternUnits="userSpaceOnUse"
-          >
-            <circle cx="1" cy="1" r="1" fill="white" />
-          </pattern>
-        </defs>
-        <rect width="100%" height="100%" fill="url(#dots)" />
-      </svg>
-      <aside className="hidden w-64 flex-shrink-0 flex-col rounded-tr-2xl rounded-br-2xl border-r border-gray-800 bg-gray-900/60 p-6 shadow-2xl backdrop-blur-md md:flex">
-        {/* Logo/Welcome Section */}
-        <div className="mb-8 text-center">
-          <div className="text-2xl font-extrabold tracking-wide text-white">
-            Admin Panel
+      {
+        <aside className="hidden w-64 flex-shrink-0 flex-col rounded-tr-2xl rounded-br-2xl border-r border-gray-800 bg-gray-900/60 p-6 shadow-2xl backdrop-blur-md md:flex">
+          <div className="mb-8 text-center">
+            <div className="text-2xl font-extrabold tracking-wide text-white">
+              Admin Panel
+            </div>
+            <p className="text-sm text-gray-400">
+              Welcome, {username || "Admin"}
+            </p>
           </div>
-          <p className="text-sm text-gray-400">
-            Welcome, {username || "Admin"}
-          </p>
-        </div>
 
-        {/* Nav Links */}
-        <nav className="flex flex-col gap-4">
-          <a
-            href="#dashboard-overview"
-            className="flex items-center gap-2 rounded-md px-4 py-2 text-gray-300 transition hover:bg-blue-600 hover:text-white"
-          >
-            📊 <span>Dashboard Overview</span>
-          </a>
-          <a
-            href="#filters-section"
-            className="flex items-center gap-2 rounded-md px-4 py-2 text-gray-300 transition hover:bg-purple-600 hover:text-white"
-          >
-            🧰 <span>Filters & Export</span>
-          </a>
-          <a
-            href="#feedback-list-section"
-            className="flex items-center gap-2 rounded-md px-4 py-2 text-gray-300 transition hover:bg-pink-600 hover:text-white"
-          >
-            📝 <span>Feedback List</span>
-          </a>
-          <a
-            href="#pagination-section"
-            className="flex items-center gap-2 rounded-md px-4 py-2 text-gray-300 transition hover:bg-green-600 hover:text-white"
-          >
-            🔢 <span>Pagination</span>
-          </a>
-        </nav>
+          <nav className="flex flex-col gap-4">
+            <a
+              href="#dashboard-overview"
+              className="flex items-center gap-2 rounded-md px-4 py-2 text-gray-300 transition hover:bg-blue-600 hover:text-white"
+            >
+              📊 <span>Dashboard Overview</span>
+            </a>
+            <a
+              href="#filters-section"
+              className="flex items-center gap-2 rounded-md px-4 py-2 text-gray-300 transition hover:bg-purple-600 hover:text-white"
+            >
+              🧰 <span>Filters & Export</span>
+            </a>
+            <a
+              href="#feedback-list-section"
+              className="flex items-center gap-2 rounded-md px-4 py-2 text-gray-300 transition hover:bg-pink-600 hover:text-white"
+            >
+              📝 <span>Feedback List</span>
+            </a>
+            <a
+              href="#pagination-section"
+              className="flex items-center gap-2 rounded-md px-4 py-2 text-gray-300 transition hover:bg-green-600 hover:text-white"
+            >
+              🔢 <span>Pagination</span>
+            </a>
+          </nav>
 
-        {/* Spacer + Logout Button */}
-        <div className="mt-auto pt-8">
-          <LogoutButton />
-        </div>
-      </aside>
+          <div className="mt-auto pt-8">
+            <LogoutButton />
+          </div>
+        </aside>
+      }
 
-      {/* Main Section */}
       <div className="flex flex-1 flex-col overflow-y-auto p-6">
         {/* Header (mobile-friendly) */}
         <header className="mb-6 flex flex-col justify-between gap-3 border-b border-gray-800 pb-4 sm:flex-row sm:items-center">
