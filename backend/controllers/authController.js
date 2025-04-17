@@ -40,7 +40,7 @@ export const loginUser = async (req, res) => {
 
     // console.log("Generated Token:", token);
 
-    res.status(200).json({ token });
+    res.status(200).json({ token, name: user.name });
   } catch (error) {
     res.status(500).json({ message: error.message });
   }
