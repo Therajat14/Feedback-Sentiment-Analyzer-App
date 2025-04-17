@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import FeedbackForm from "../components/FeedbackForm";
 import FeedbackList from "../components/FeedbackList";
 import LogoutButton from "../components/LogOut";
+import { Link } from "react-router";
 
 const Home = () => {
   const [username, setUsername] = useState("");
@@ -86,8 +87,9 @@ const Home = () => {
         <main className="flex-1 overflow-y-auto p-8">
           <div className="mx-auto max-w-4xl space-y-10">
             <FeedbackForm reload={reload} setReload={setReload} />
-            <div className="rounded-xl border border-gray-800 bg-gray-900 p-4">
+            <div className="flex flex-row justify-between rounded-xl border border-gray-800 bg-gray-900 p-4">
               <h2 className="text-xl font-semibold">Feedback History</h2>
+              <Link to="/admin"> Go to admin</Link>
             </div>
             <FeedbackList reload={reload} />
           </div>
