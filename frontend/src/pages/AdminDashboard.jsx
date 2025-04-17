@@ -23,9 +23,9 @@ const AdminDashboard = () => {
   const [username, setUsername] = useState("");
 
   useEffect(() => {
-    const user = JSON.parse(localStorage.getItem("user"));
-    if (user && user.username) {
-      setUsername(user.username);
+    const user = localStorage.getItem("name");
+    if (user) {
+      setUsername(name);
     }
     fetchAllFeedbacks();
   }, [page, keyword, sentiment, startDate, endDate]);
@@ -47,7 +47,7 @@ const AdminDashboard = () => {
   };
 
   return (
-    <div className="flex h-screen w-full bg-gray-950 text-white">
+    <div className="flex h-screen w-full scroll-smooth bg-gray-950 text-white">
       {/* Sidebar */}
       <svg
         className="absolute inset-0 h-full w-full opacity-10"
@@ -67,35 +67,49 @@ const AdminDashboard = () => {
         </defs>
         <rect width="100%" height="100%" fill="url(#dots)" />
       </svg>
-
-      <aside className="hidden w-64 flex-shrink-0 flex-col border-r border-gray-800 bg-gray-900/80 p-6 shadow-xl backdrop-blur-lg md:flex">
+      <aside className="hidden w-64 flex-shrink-0 flex-col rounded-tr-2xl rounded-br-2xl border-r border-gray-800 bg-gray-900/60 p-6 shadow-2xl backdrop-blur-md md:flex">
+        {/* Logo/Welcome Section */}
         <div className="mb-8 text-center">
-          <div className="text-xl font-bold">
-            Welcome, {username || "Admin"}
+          <div className="text-2xl font-extrabold tracking-wide text-white">
+            Admin Panel
           </div>
-          <p className="text-sm text-gray-400">Admin Panel</p>
+          <p className="text-sm text-gray-400">
+            Welcome, {username || "Admin"}
+          </p>
         </div>
-        <nav className="space-y-4">
+
+        {/* Nav Links */}
+        <nav className="flex flex-col gap-4">
           <a
-            href="#"
-            className="block rounded-md px-4 py-2 text-gray-300 transition hover:bg-blue-600 hover:text-white"
+            href="#dashboard-overview"
+            className="flex items-center gap-2 rounded-md px-4 py-2 text-gray-300 transition hover:bg-blue-600 hover:text-white"
           >
-            📊 Dashboard
+            📊 <span>Dashboard Overview</span>
           </a>
           <a
-            href="#"
-            className="block rounded-md px-4 py-2 text-gray-300 transition hover:bg-purple-600 hover:text-white"
+            href="#filters-section"
+            className="flex items-center gap-2 rounded-md px-4 py-2 text-gray-300 transition hover:bg-purple-600 hover:text-white"
           >
-            📝 Manage Feedbacks
+            🧰 <span>Filters & Export</span>
           </a>
           <a
-            href="#"
-            className="block rounded-md px-4 py-2 text-gray-300 transition hover:bg-pink-600 hover:text-white"
+            href="#feedback-list-section"
+            className="flex items-center gap-2 rounded-md px-4 py-2 text-gray-300 transition hover:bg-pink-600 hover:text-white"
           >
-            📦 Reports
+            📝 <span>Feedback List</span>
           </a>
-          <LogoutButton />
+          <a
+            href="#pagination-section"
+            className="flex items-center gap-2 rounded-md px-4 py-2 text-gray-300 transition hover:bg-green-600 hover:text-white"
+          >
+            🔢 <span>Pagination</span>
+          </a>
         </nav>
+
+        {/* Spacer + Logout Button */}
+        <div className="mt-auto pt-8">
+          <LogoutButton />
+        </div>
       </aside>
 
       {/* Main Section */}
@@ -109,10 +123,15 @@ const AdminDashboard = () => {
         </header>
 
         {/* Charts */}
-        <Chart />
+        <div id="dashboard-overview">
+          <Chart />
+        </div>
 
         {/* Filters + Export */}
-        <div className="mt-6 flex flex-col gap-4 rounded-xl border border-gray-800 bg-gray-900 p-4 shadow-md md:flex-row md:items-center md:justify-between">
+        <div
+          id="filters-section"
+          className="mt-6 flex flex-col gap-4 rounded-xl border border-gray-800 bg-gray-900 p-4 shadow-md md:flex-row md:items-center md:justify-between"
+        >
           <h2 className="text-xl font-semibold">Feedbacks</h2>
           <div className="flex flex-wrap gap-3">
             <input
@@ -179,7 +198,10 @@ const AdminDashboard = () => {
         </div>
 
         {/* Pagination */}
-        <div className="mt-8 flex flex-wrap justify-center gap-2">
+        <div
+          className="relative mt-8 flex flex-wrap justify-center gap-2"
+          id="pagination-section"
+        >
           {Array.from({ length: pages }, (_, i) => {
             const pageNum = i + 1;
             const isHidden =
