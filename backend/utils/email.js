@@ -1,25 +1,28 @@
+// utils/sendEmail.js
 import nodemailer from "nodemailer";
 
-export const sendEmail = async (to, subject, text) => {
+export const sendEmail = async ({ to, subject, text }) => {
   try {
     const transporter = nodemailer.createTransport({
-      host: "smtp-relay.brevo.com",
-      port: 587,
+      service: "yahoo",
       auth: {
-        user: process.env.EMAIL_USER, // Your Gmail
-        pass: process.env.EMAIL_PASS, // App password
+        user: process.env.EMAIL_USER,
+        pass: process.env.EMAIL_PASS,
       },
     });
 
-    await transporter.sendMail({
-      from: '"Rajat Singh 👑" rajat.code14@gmail.com',
+    const mailOptions = {
+      from: `"Rajat's App" <${process.env.EMAIL_USER}>`,
       to,
       subject,
       text,
-    });
+    };
 
-    console.log("✅ Email sent to", to);
+    const info = await transporter.sendMail(mailOptions);
+    console.log("✅ Email sent:", info.response);
+    return { success: true, info };
   } catch (error) {
-    console.error("❌ Email sending failed:", error);
+    console.error("❌ Email failed:", error.message);
+    return { success: false, error: error.message };
   }
 };
