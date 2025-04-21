@@ -17,13 +17,17 @@ function Login() {
       localStorage.setItem("token", res.data.token);
       localStorage.setItem("name", res.data.name);
       console.log(res.data);
-      toast.success("✅ Login successful");
+
+      // ✅ Success toast with user's name (optional)
+      toast.success(`Welcome back, ${res.data.name || "User"}! 🎉`);
       navigate("/");
     } catch (error) {
-      toast.error(error.response?.data?.message || "Login failed");
+      // ❌ Error toast with fallback message
+      toast.error(
+        error.response?.data?.message || "Login failed. Please try again.",
+      );
     }
   };
-
   return (
     <div className="relative flex min-h-screen items-center justify-center overflow-hidden bg-gradient-to-br from-gray-900 via-gray-800 to-black px-4">
       {/* ✅ Pattern Background */}

@@ -1,13 +1,36 @@
 import { useState } from "react";
 import api from "../api/axios";
+import { toast } from "react-hot-toast";
+import jwtDecode from "jwt-decode"; // ✅ Import jwt-decode
+import { useNavigate } from "react-router-dom"; // ✅ Import navigate
 
 const FeedbackForm = ({ reload, setReload }) => {
   const [message, setMessage] = useState("");
+  const navigate = useNavigate();
+
+  const isTokenExpired = (token) => {
+    try {
+      const decoded = jwtDecode(token);
+      const currentTime = Date.now() / 1000;
+      return decoded.exp < currentTime;
+    } catch (e) {
+      console.log(e);
+      return true;
+    }
+  };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    const token = localStorage.getItem("token");
+
+    if (!token || isTokenExpired(token)) {
+      localStorage.removeItem("token");
+      localStorage.removeItem("name");
+      toast.error("Session expired. Please log in again.");
+      return navigate("/login");
+    }
+
     try {
-      const token = localStorage.getItem("token");
       await api.post(
         "api/feedback",
         { message },
@@ -20,8 +43,10 @@ const FeedbackForm = ({ reload, setReload }) => {
 
       setMessage("");
       setReload(!reload);
+      toast.success("✅ Feedback submitted successfully!");
     } catch (error) {
       console.error(error);
+      toast.error("❌ Failed to submit feedback. Please try again.");
     }
   };
 
