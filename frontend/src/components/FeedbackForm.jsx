@@ -1,8 +1,8 @@
 import { useState } from "react";
 import api from "../api/axios";
 import { toast } from "react-hot-toast";
-import jwtDecode from "jwt-decode"; // ✅ Import jwt-decode
-import { useNavigate } from "react-router-dom"; // ✅ Import navigate
+import { jwtDecode } from "jwt-decode"; // ✅ Import jwt-decode
+import { useNavigate } from "react-router"; // ✅ Import navigate
 
 const FeedbackForm = ({ reload, setReload }) => {
   const [message, setMessage] = useState("");
