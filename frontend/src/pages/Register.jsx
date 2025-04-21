@@ -31,7 +31,7 @@ function Register() {
         className="w-full max-w-sm space-y-6 rounded-2xl bg-white/5 p-8 shadow-2xl backdrop-blur-md"
       >
         <h2 className="text-center text-3xl font-bold text-white">
-          Create Your Account 🚀
+          Create Your Account
         </h2>
         <input
           name="name"

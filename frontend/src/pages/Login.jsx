@@ -57,7 +57,7 @@ function Login() {
         className="z-10 w-full max-w-sm space-y-6 rounded-2xl bg-white/5 p-8 shadow-2xl backdrop-blur-md"
       >
         <h2 className="text-center text-3xl font-bold text-white">
-          Welcome Back 👋
+          Welcome Back
         </h2>
         <input
           name="email"
