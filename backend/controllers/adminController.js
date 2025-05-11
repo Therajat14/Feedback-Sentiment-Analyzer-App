@@ -1,6 +1,5 @@
 import Feedback from "../models/Feedback.js";
 
-// ✅ Get all feedbacks
 export const getAllFeedbacks = async (req, res) => {
   try {
     const {
@@ -14,23 +13,20 @@ export const getAllFeedbacks = async (req, res) => {
 
     const query = {};
 
-    // ✅ Keyword filter
     if (keyword) {
       query.message = { $regex: keyword, $options: "i" };
     }
 
-    // ✅ Sentiment filter
     if (sentiment) {
       query.sentimentLabel = sentiment;
     }
 
-    // ✅ Date range filter
     if (startDate || endDate) {
       query.createdAt = {};
       if (startDate) query.createdAt.$gte = new Date(startDate);
       if (endDate) {
         const end = new Date(endDate);
-        end.setHours(23, 59, 59, 999); // 🛠 Set to end of the day
+        end.setHours(23, 59, 59, 999);
         query.createdAt.$lte = end;
       }
     }
@@ -41,7 +37,7 @@ export const getAllFeedbacks = async (req, res) => {
       .sort({ createdAt: -1 })
       .skip((page - 1) * limit)
       .limit(Number(limit))
-      .populate("userId", "name"); // 🟢 Populate user's name
+      .populate("userId", "name");
 
     res.json({
       feedbacks,
@@ -54,7 +50,6 @@ export const getAllFeedbacks = async (req, res) => {
   }
 };
 
-// ✅ Delete specific feedback by ID
 export const deleteFeedback = async (req, res) => {
   try {
     const { id } = req.params;
@@ -78,7 +73,7 @@ export const getFeedbackStats = async (req, res) => {
 
     const sentimentCounts = { Positive: 0, Negative: 0, Neutral: 0 };
     const dailyFeedback = {};
-    const dailySentimentBreakdown = {}; // 👈 NEW
+    const dailySentimentBreakdown = {};
 
     feedbacks.forEach((item) => {
       const sentiment = item.sentimentLabel;
@@ -86,10 +81,8 @@ export const getFeedbackStats = async (req, res) => {
 
       const date = item.createdAt.toISOString().split("T")[0];
 
-      // Total daily feedback count
       dailyFeedback[date] = (dailyFeedback[date] || 0) + 1;
 
-      // Sentiment breakdown per day
       if (!dailySentimentBreakdown[date]) {
         dailySentimentBreakdown[date] = {
           Positive: 0,
@@ -106,7 +99,6 @@ export const getFeedbackStats = async (req, res) => {
   }
 };
 
-// Controller
 export const getFeedbackTexts = async (req, res) => {
   try {
     const feedbacks = await Feedback.find({}, "text");
